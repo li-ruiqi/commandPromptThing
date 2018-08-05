@@ -8,9 +8,6 @@ using namespace std;
 
 //----------------------
 
-
-
-
 int main()
 {
 	// setup
@@ -44,6 +41,8 @@ int main()
 
 	while (c != "quit")
 	{
+		startOfLoop:
+
 		printf("%slogin_enteruser$- ", KYEL);
 		a();
 
@@ -101,6 +100,11 @@ int main()
 
 		else if (c == accounts[0].name && accounts[0].isActive)
 		{
+			if (!(accounts[0].isAccountActive))
+			{
+				accountIsDisabled(0, plist);
+				goto startOfLoop;
+			}
 			string n = accounts[0].name;
 
 			printf("%s", CUP);

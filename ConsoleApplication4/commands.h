@@ -39,6 +39,7 @@ struct cmd
 };
 
 void a();
+void accountIsDisabled(int a, vector <profiles> *p);
 
 int PrintCommands(vector <profiles> *p);
 int PrintCommands_user(vector <profiles> *p);

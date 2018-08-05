@@ -23,6 +23,8 @@ using namespace std;
 
 //----------------------
 
+//------strucs,ect------
+
 struct profiles
 {
 	string name = "N/A";
@@ -39,6 +41,8 @@ struct cmd
 };
 
 vector <profiles> accounts(10);
+
+//------prep funct------
 
 void a()
 {
@@ -78,6 +82,17 @@ bool unknownCodeFailure(string c)
 	}
 }
 
+//--------------------
+
+void accountIsDisabled(int a, vector <profiles> *p)
+{
+	printf("\n%sERROR_203%s: account access denied\n", KRED, KYEL);
+	printf("%ssorry, %s, your account is temporarily disabled\n", KGRN, (*p)[a].name.c_str());
+	printf("please contact admin to reinable your account\n\n");
+}
+
+//--------functs--------
+
 int PrintCommands_user(vector <profiles> *p)
 {
 	printf("%s\ncommandList - lists commands\n", KGRN);
@@ -85,6 +100,8 @@ int PrintCommands_user(vector <profiles> *p)
 	printf("save - saves stuff to hard drive\n");
 	return 0;
 }
+
+//--------------------
 
 int PrintCommands(vector <profiles> *p)
 {
@@ -98,6 +115,8 @@ int PrintCommands(vector <profiles> *p)
 	printf("exit - exits program\n");
 	return 0;
 }
+
+//--------------------
 
 int addNewAccount(vector <profiles> *p)
 {
@@ -136,6 +155,8 @@ int addNewAccount(vector <profiles> *p)
 	(*p)[profileNum].password = c;
 	return 0;
 }
+
+//--------------------
 
 int getAccount(vector <profiles> *p)
 {
@@ -192,6 +213,8 @@ int getAccount(vector <profiles> *p)
 	printf("%s%d\n", KGRN, (*p)[a].pts);
 	return 0;
 }
+
+//--------------------
 
 int deleteAccount_run(vector <profiles> *p)
 {
@@ -257,6 +280,8 @@ int deleteAccount_run(vector <profiles> *p)
 
 	return 0;
 }
+
+//--------------------
 
 int editAccount(vector <profiles> *p)
 {
@@ -346,6 +371,8 @@ int editAccount(vector <profiles> *p)
 	return 0;
 }
 
+//--------------------
+
 int disableAccount(vector <profiles> *p)
 {
 	string c;
@@ -354,7 +381,7 @@ int disableAccount(vector <profiles> *p)
 	printf("%sADMIN", KBLU);
 	printf("%s: $- ", KYEL);
 	printf("%sdisableUser - ", KCYN);
-	printf("%senter account data - ", KMAG);
+	printf("%senter account number - ", KMAG);
 
 	getline(cin, c);
 	int a = 0;
@@ -392,10 +419,14 @@ int disableAccount(vector <profiles> *p)
 	return 0;
 }
 
+//--------------------
+
 int save()
 {
 	return 0;
 }
+
+//--------------------
 
 int exit_run(vector <profiles> *p)
 {
@@ -416,6 +447,8 @@ int exit_run(vector <profiles> *p)
 
 	return 0;
 }
+
+//--------------------
 
 cmd list[100] =
 {
