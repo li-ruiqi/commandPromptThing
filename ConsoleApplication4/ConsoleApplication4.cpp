@@ -523,15 +523,6 @@ int main()
 			}
 		}
 
-
-
-
-
-
-
-
-
-
 		else if (c == accounts[0].name && accounts[0].isActive)
 		{
 			string n = accounts[0].name;
