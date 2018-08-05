@@ -38,7 +38,7 @@ struct profiles
 struct cmd
 {
 	string commandName;
-	int(*run)();
+	int(*run)(vector <profiles> *p);
 };
 
 vector <profiles> accounts(10);
@@ -81,7 +81,15 @@ bool unknownCodeFailure(string c)
 	}
 }
 
-int PrintCommands()
+int PrintCommands_user(vector <profiles> *p)
+{
+	printf("%s\ncommandList - lists commands\n", KGRN);
+	printf("showProfile - prints all data from a account\n");
+	printf("save - saves stuff to hard drive\n");
+	return 0;
+}
+
+int PrintCommands(vector <profiles> *p)
 {
 	printf("%s\ncommandList - lists commands\n", KGRN);
 	printf("editUser - edits data in an account\n");
@@ -94,17 +102,17 @@ int PrintCommands()
 	return 0;
 }
 
-int addNewAccount()
+int addNewAccount(vector <profiles> *p)
 {
 	string c = "";
 
 	int profileNum = 0;
-	while (accounts[profileNum].isActive)
+	while ((*p)[profileNum].isActive)
 	{
 		profileNum++;
 	}
 
-	accounts[profileNum].isActive = true;
+	(*p)[profileNum].isActive = true;
 
 	printf("%s", CUP);
 	printf("%sAccount1_", KYEL);
@@ -115,7 +123,7 @@ int addNewAccount()
 
 	getline(cin, c);
 
-	accounts[profileNum].name = c;
+	(*p)[profileNum].name = c;
 
 	printf("%s%s", CUP, DLINE);
 	printf("\r");
@@ -128,11 +136,11 @@ int addNewAccount()
 
 	getline(cin, c);
 
-	accounts[profileNum].password = c;
+	(*p)[profileNum].password = c;
 	return 0;
 }
 
-int getAccount()
+int getAccount(vector <profiles> *p)
 {
 	string c;
 	int a = 0;
@@ -156,7 +164,7 @@ int getAccount()
 		return 0;
 	}
 
-	if (unknownCodeFailure(c) || !(accounts[a].isActive))
+	if (unknownCodeFailure(c) || !((*p)[a].isActive))
 	{
 		failCode();
 		return 0;
@@ -180,15 +188,15 @@ int getAccount()
 		a = 0;
 
 	printf("%sname: ", KMAG);
-	printf("%s%s\n", KGRN, accounts[a].name.c_str());
+	printf("%s%s\n", KGRN, (*p)[a].name.c_str());
 	printf("%spassword: ", KMAG);
-	printf("%s%s\n", KGRN, accounts[a].password.c_str());
+	printf("%s%s\n", KGRN, (*p)[a].password.c_str());
 	printf("%spoints: ", KMAG);
-	printf("%s%d\n", KGRN, accounts[a].pts);
+	printf("%s%d\n", KGRN, (*p)[a].pts);
 	return 0;
 }
 
-int deleteAccount_run()
+int deleteAccount_run(vector <profiles> *p)
 {
 	string c;
 	printf("%s", CUP);
@@ -212,7 +220,7 @@ int deleteAccount_run()
 		return 0;
 	}
 
-	if (unknownCodeFailure(c) || !(accounts[a].isActive))
+	if (unknownCodeFailure(c) || !((*p)[a].isActive))
 	{
 		failCode();
 		return 0;
@@ -242,10 +250,10 @@ int deleteAccount_run()
 		Sleep(250);
 		printf("\r");
 	}
-	accounts[a].name = accounts[a].password = "N/A";
-	accounts[a].pts = 0;
-	accounts[a].isAccountActive = true;
-	accounts[a].isActive = false;
+	(*p)[a].name = (*p)[a].password = "N/A";
+	(*p)[a].pts = 0;
+	(*p)[a].isAccountActive = true;
+	(*p)[a].isActive = false;
 
 	printf("data deleted");
 
@@ -253,7 +261,7 @@ int deleteAccount_run()
 	return 0;
 }
 
-int editAccount()
+int editAccount(vector <profiles> *p)
 {
 	string c;
 	int a = 0;
@@ -279,7 +287,7 @@ int editAccount()
 		return 0;
 	}
 
-	if (unknownCodeFailure(c) || !(accounts[a].isActive))
+	if (unknownCodeFailure(c) || !((*p)[a].isActive))
 	{
 		failCode();
 		return 0;
@@ -300,7 +308,7 @@ int editAccount()
 
 	printf("printing data...\n\n");
 
-	printf("%s%d\n", KGRN, accounts[a].pts);
+	printf("%s%d\n", KGRN, (*p)[a].pts);
 
 	printf("%sAccount1_", KYEL);
 	printf("%sADMIN", KBLU);
@@ -336,12 +344,12 @@ int editAccount()
 			
 			return 0;
 		}
-		accounts[a].pts += i;
+		(*p)[a].pts += i;
 	}
 	return 0;
 }
 
-int disableAccount()
+int disableAccount(vector <profiles> *p)
 {
 	string c;
 	printf("%s", CUP);
@@ -363,7 +371,7 @@ int disableAccount()
 		failCode();
 		return 0;
 	}
-	if (unknownCodeFailure(c) || !(accounts[a].isActive))
+	if (unknownCodeFailure(c) || !((*p)[a].isActive))
 	{
 		failCode();
 		return 0;
@@ -382,7 +390,7 @@ int disableAccount()
 		printf("\r");
 	}
 	printf("%s", DLINE);
-	accounts[a].isAccountActive = false;
+	(*p)[a].isAccountActive = false;
 
 	return 0;
 }
@@ -392,7 +400,7 @@ int save()
 	return 0;
 }
 
-int exit_run()
+int exit_run(vector <profiles> *p)
 {
 	printf("\n%sexiting %s\"", KYEL, KMAG);
 	printf("%sAccount1_", KYEL);
@@ -428,10 +436,10 @@ cmd list[100] =
 
 cmd listUsers[100] =
 {
-	{ "commandList", PrintCommands },
-	{ "?", PrintCommands },
-	{ "help", PrintCommands },
-	{ "openAccountData", getAccount },
+	{ "commandList", PrintCommands_user },
+	{ "?", PrintCommands_user },
+	{ "help", PrintCommands_user },
+	{ "openProfile", getAccount },
 	{ "exit", exit_run },
 	{ "", NULL }
 };
@@ -465,6 +473,7 @@ int main()
 
 	string c;
 	cmd *run = list;
+	vector <profiles> *plist = &accounts;
 
 	while (c != "quit")
 	{
@@ -486,7 +495,7 @@ int main()
 
 			printf("%sCOMMANDS\n", KCYN);
 
-			PrintCommands();
+			PrintCommands(plist);
 
 			printf("\n");
 
@@ -506,7 +515,7 @@ int main()
 				{
 					if (run->commandName == c)
 					{
-						run->run();
+						run->run(plist);
 						break;
 					}
 					run++;
@@ -538,7 +547,7 @@ int main()
 
 			printf("%sCOMMANDS\n", KCYN);
 
-			PrintCommands();
+			PrintCommands(plist);
 
 			printf("\n");
 
@@ -558,7 +567,7 @@ int main()
 				{
 					if (run->commandName == c)
 					{
-						run->run();
+						run->run(plist);
 						break;
 					}
 					run++;
