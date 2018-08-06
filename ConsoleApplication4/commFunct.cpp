@@ -100,12 +100,28 @@ void accountIsDisabled(int a, vector <profiles> *p)
 
 //--------functs--------
 
+int read(vector <profiles> *p)
+{
+	FILE *fp;
+	FileHEADER header;
+
+	int magic;
+
+	fopen_s(&fp, "tests.abc", "r+");
+
+	fread(&magic, sizeof(magic), 1, fp);
+
+	if (magic =! header.magic)
+	{
+		return 0;
+	}
+}
+
 int save(vector <profiles> *p)
 {
 	FileHEADER header;
 
 	FILE *fp;
-	accounts[9].password = "wasd";
 
 	fopen_s(&fp, "tests.abc", "wb+");
 
@@ -196,6 +212,8 @@ int addNewAccount(vector <profiles> *p)
 }
 
 //--------------------
+
+
 
 int getAccount(vector <profiles> *p)
 {
