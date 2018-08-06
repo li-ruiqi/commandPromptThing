@@ -25,6 +25,12 @@ using namespace std;
 
 //------strucs,ect------
 
+struct FileHEADER
+{
+	int magic = 0x758329;
+	int size = 10;
+};
+
 struct profiles
 {
 	string name = "N/A";
@@ -41,6 +47,7 @@ struct cmd
 };
 
 vector <profiles> accounts(10);
+vector <profiles> *p = &accounts;
 
 //------prep funct------
 
@@ -93,6 +100,38 @@ void accountIsDisabled(int a, vector <profiles> *p)
 
 //--------functs--------
 
+int save(vector <profiles> *p)
+{
+	FileHEADER header;
+
+	FILE *fp;
+	accounts[9].password = "wasd";
+
+	fopen_s(&fp, "tests.abc", "wb+");
+
+	fwrite(&header, sizeof(header), 1, fp);
+
+	for (int i = 0; i < header.size; i++)
+	{
+		int strSizeN = (*p)[i].name.size();
+		int strSizeP = (*p)[i].password.size();
+
+		fwrite(&strSizeN, sizeof(strSizeN), 1, fp);
+
+		fwrite((*p)[i].name.c_str(), strSizeN, 1, fp);
+
+		fwrite(&strSizeP, sizeof(strSizeP), 1, fp);
+		fwrite((*p)[i].password.c_str(), strSizeP, 1, fp);
+
+		fwrite(&(*p)[i].isActive, sizeof((*p)[i].isActive), 1, fp);
+
+		fwrite(&(*p)[i].isAccountActive, sizeof((*p)[i].isAccountActive), 1, fp);
+
+		fwrite(&(*p)[i].pts, sizeof((*p)[i].pts), 1, fp);
+	}
+	fclose(fp);
+	return 0;
+}
 int PrintCommands_user(vector <profiles> *p)
 {
 	printf("%s\ncommandList - lists commands\n", KGRN);
@@ -421,13 +460,6 @@ int disableAccount(vector <profiles> *p)
 
 //--------------------
 
-int save()
-{
-	return 0;
-}
-
-//--------------------
-
 int exit_run(vector <profiles> *p)
 {
 	printf("\n%sexiting %s\"", KYEL, KMAG);
@@ -439,7 +471,7 @@ int exit_run(vector <profiles> *p)
 	printf("%s", DLINE);
 	printf("saving data[---       ]32%%\r");
 
-	save();
+	save(p);
 	Sleep(220);
 	printf("%s", DLINE);
 
@@ -453,15 +485,16 @@ int exit_run(vector <profiles> *p)
 cmd list[100] =
 {
 	{ "commandList", PrintCommands },
-{ "?", PrintCommands },
-{ "help", PrintCommands },
-{ "addUser", addNewAccount },
-{ "showUserData", getAccount },
-{ "exit", exit_run },
-{ "editUser", editAccount },
-{ "disableUser", disableAccount },
-{ "deleteUser", deleteAccount_run },
-{ "", NULL }
+	{ "?", PrintCommands },
+	{ "help", PrintCommands },
+	{ "addUser", addNewAccount },
+	{ "showUserData", getAccount },
+	{ "exit", exit_run },
+	{ "editUser", editAccount },
+	{ "disableUser", disableAccount },
+	{ "deleteUser", deleteAccount_run },
+	{ "save", save},
+	{ "", NULL }
 };
 
 cmd listUsers[100] =
