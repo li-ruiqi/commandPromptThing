@@ -45,6 +45,8 @@ int PrintCommands(vector <profiles> *p);
 int PrintCommands_user(vector <profiles> *p);
 int save(vector <profiles> *p);
 
+int setup()
+
 extern cmd list[100];
 extern cmd listUsers[100];
 

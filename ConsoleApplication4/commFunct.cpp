@@ -21,13 +21,15 @@ using namespace std;
 #define CUP "\x1B[1A"
 #define DLINE "\x1B[1M"
 
+#define MNUM 0x758329
+
 //----------------------
 
 //------strucs,ect------
 
 struct FileHEADER
 {
-	int magic = 0x758329;
+	int magic = MNUM;
 	int size = 10;
 };
 
@@ -72,6 +74,31 @@ void failCode()
 	printf("3)account does not exist\n");
 }
 
+void setup()
+{
+	HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (hOut == INVALID_HANDLE_VALUE)
+	{
+		return GetLastError();
+	}
+
+	DWORD dwMode = 0;
+	if (!GetConsoleMode(hOut, &dwMode))
+	{
+		return GetLastError();
+	}
+
+#ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
+#define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+#endif
+
+	dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+	if (!SetConsoleMode(hOut, dwMode))
+	{
+		return GetLastError();
+	}
+}
+
 bool unknownCodeFailure(string c)
 {
 	try
@@ -105,15 +132,32 @@ int read(vector <profiles> *p)
 	FILE *fp;
 	FileHEADER header;
 
-	int magic;
-
 	fopen_s(&fp, "tests.abc", "r+");
 
-	fread(&magic, sizeof(magic), 1, fp);
+	fread(&header, sizeof(header), 1, fp);
 
-	if (magic =! header.magic)
+	if (header.magic != MNUM)
 	{
-		return 0;
+		return -1;
+	}
+	for (int i = 0; i < header.size; i++)
+	{
+		int strLenN;
+		int strLenP;
+
+		fread(&strLenN, sizeof(strLenN), 1, fp);
+		(*p)[i].name.resize(strLenN);
+		fread((void*)(*p)[i].name.c_str(), strLenN, 1, fp);
+
+		fread(&strLenP, sizeof(strLenP), 1, fp);
+		(*p)[i].password.resize(strLenP);
+		fread((void*)(*p)[i].password.c_str(), strLenP, 1, fp);
+
+		fread(&(*p)[i].isActive, sizeof((*p)[i].isActive), 1, fp);
+
+		fread(&(*p)[i].isAccountActive, sizeof((*p)[i].isAccountActive), 1, fp);
+
+		fread(&(*p)[i].pts, sizeof((*p)[i].pts), 1, fp);
 	}
 }
 
