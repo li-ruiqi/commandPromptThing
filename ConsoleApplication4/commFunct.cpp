@@ -28,7 +28,7 @@ void failCode()
 	printf("3)account does not exist\n");
 }
 
-void setup()
+int setup()
 {
 	HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (hOut == INVALID_HANDLE_VALUE)
@@ -51,6 +51,8 @@ void setup()
 	{
 		return GetLastError();
 	}
+
+	return 0;
 }
 
 bool unknownCodeFailure(string c)
