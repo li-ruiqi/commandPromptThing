@@ -28,6 +28,31 @@ void failCode()
 	printf("3)account does not exist\n");
 }
 
+void setup()
+{
+	HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	if (hOut == INVALID_HANDLE_VALUE)
+	{
+		return GetLastError();
+	}
+
+	DWORD dwMode = 0;
+	if (!GetConsoleMode(hOut, &dwMode))
+	{
+		return GetLastError();
+	}
+
+#ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
+#define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+#endif
+
+	dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+	if (!SetConsoleMode(hOut, dwMode))
+	{
+		return GetLastError();
+	}
+}
+
 bool unknownCodeFailure(string c)
 {
 	try
@@ -120,6 +145,8 @@ int addNewAccount(vector <profiles> *p)
 }
 
 //--------------------
+
+
 
 int getAccount(vector <profiles> *p)
 {

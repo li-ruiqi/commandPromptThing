@@ -10,6 +10,8 @@ void accountIsDisabled(int a, vector <profiles> *p);
 int PrintCommands(vector <profiles> *p);
 int PrintCommands_user(vector <profiles> *p);
 
+int setup()
+
 extern cmd list[100];
 extern cmd listUsers[100];
 
