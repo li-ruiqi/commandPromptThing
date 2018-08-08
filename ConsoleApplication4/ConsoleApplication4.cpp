@@ -38,6 +38,7 @@ int main()
 	string c;
 	cmd *run = list;
 	vector <profiles> *plist = &accounts;
+	read(plist);
 
 	while (c != "quit")
 	{

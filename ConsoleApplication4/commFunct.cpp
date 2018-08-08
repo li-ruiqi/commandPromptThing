@@ -1,53 +1,9 @@
 #include "stdafx.h"
-#include "stdafx.h"
-#include <windows.h>
-#include <iostream>
-#include <string.h>
-#include <string>
-#include <vector>
-#include <stdlib.h>
+#include "commands.h"
 
 using namespace std;
 
-#define KNRM  "\x1B[0m"
-#define KRED  "\x1B[31m"
-#define KGRN  "\x1B[32m"
-#define KYEL  "\x1B[33m"
-#define KBLU  "\x1B[34m"
-#define KMAG  "\x1B[35m"
-#define KCYN  "\x1B[36m"
-#define KWHT  "\x1B[37m"
-
-#define CUP "\x1B[1A"
-#define DLINE "\x1B[1M"
-
-//----------------------
-
-//------strucs,ect------
-
-struct FileHEADER
-{
-	int magic = 0x758329;
-	int size = 10;
-};
-
-struct profiles
-{
-	string name = "N/A";
-	string password = "N/A";
-	bool isActive = false;
-	bool isAccountActive = true;
-	int pts = 0;
-};
-
-struct cmd
-{
-	string commandName;
-	int(*run)(vector <profiles> *p);
-};
-
 vector <profiles> accounts(10);
-vector <profiles> *p = &accounts;
 
 //------prep funct------
 
@@ -100,38 +56,6 @@ void accountIsDisabled(int a, vector <profiles> *p)
 
 //--------functs--------
 
-int save(vector <profiles> *p)
-{
-	FileHEADER header;
-
-	FILE *fp;
-	accounts[9].password = "wasd";
-
-	fopen_s(&fp, "tests.abc", "wb+");
-
-	fwrite(&header, sizeof(header), 1, fp);
-
-	for (int i = 0; i < header.size; i++)
-	{
-		int strSizeN = (*p)[i].name.size();
-		int strSizeP = (*p)[i].password.size();
-
-		fwrite(&strSizeN, sizeof(strSizeN), 1, fp);
-
-		fwrite((*p)[i].name.c_str(), strSizeN, 1, fp);
-
-		fwrite(&strSizeP, sizeof(strSizeP), 1, fp);
-		fwrite((*p)[i].password.c_str(), strSizeP, 1, fp);
-
-		fwrite(&(*p)[i].isActive, sizeof((*p)[i].isActive), 1, fp);
-
-		fwrite(&(*p)[i].isAccountActive, sizeof((*p)[i].isAccountActive), 1, fp);
-
-		fwrite(&(*p)[i].pts, sizeof((*p)[i].pts), 1, fp);
-	}
-	fclose(fp);
-	return 0;
-}
 int PrintCommands_user(vector <profiles> *p)
 {
 	printf("%s\ncommandList - lists commands\n", KGRN);
