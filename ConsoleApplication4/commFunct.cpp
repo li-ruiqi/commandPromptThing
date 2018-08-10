@@ -62,14 +62,15 @@ bool unknownCodeFailure(string c)
 		int a = stoll(c, 0, 10);
 		if (c == "0")
 			return false;
-		else if (a < 1 || a > 9)
-			return true;
+		else if (a > 0 && a < 10)
+			return false;
 
 	}
 	catch (...)
 	{
-		return false;
+		return true;
 	}
+	return true;
 }
 
 //--------------------
@@ -238,9 +239,6 @@ int deleteAccount_run(vector <profiles> *p)
 		return 0;
 	}
 
-	if (a == 11)
-		a = 0;
-
 	printf("%sobtaining data[--        ] 27%%\r", KBLU);
 	Sleep(200);
 	printf("%s", DLINE);
@@ -374,6 +372,7 @@ int disableAccount(vector <profiles> *p)
 	printf("%s: $- ", KYEL);
 	printf("%sdisableUser - ", KCYN);
 	printf("%senter account number - ", KMAG);
+	printf("%s", KCYN);
 
 	getline(cin, c);
 	int a = 0;
@@ -392,7 +391,7 @@ int disableAccount(vector <profiles> *p)
 		failCode();
 		return 0;
 	}
-
+	printf("%s", KBLU);
 	for (int i = 0; i < 10; i++)
 	{
 		if (i % 3 == 0)
@@ -405,8 +404,62 @@ int disableAccount(vector <profiles> *p)
 		Sleep(250);
 		printf("\r");
 	}
-	printf("%s", DLINE);
+
 	(*p)[a].isAccountActive = false;
+
+	return 0;
+}
+
+//----------------------
+
+int enableAccount(vector <profiles> *p)
+{
+	string c;
+	printf("%s", CUP);
+	printf("%sAccount1_", KYEL);
+	printf("%sADMIN", KBLU);
+	printf("%s: $- ", KYEL);
+	printf("%senableUser - ", KCYN);
+	printf("%senter account number - ", KMAG);
+	printf("%s", KCYN);
+
+	getline(cin, c);
+	int a = 0;
+
+	try
+	{
+		a = stoll(c, 0, 10);
+	}
+	catch (...)
+	{
+		failCode();
+		return 0;
+	}
+	if (unknownCodeFailure(c) || !((*p)[a].isActive))
+	{
+		failCode();
+		return 0;
+	}
+	if ((*p)[a].isAccountActive)
+	{
+		printf("%saccount already enabled, exiting function\n", KGRN);
+		return 0;
+	}
+	printf("%s", KBLU);
+	for (int i = 0; i < 10; i++)
+	{
+		if (i % 3 == 0)
+			printf("%senabling.", DLINE);
+		else if (i % 3 == 1)
+			printf("enabling..");
+		else
+			printf("enabling...");
+
+		Sleep(250);
+		printf("\r");
+	}
+
+	(*p)[a].isAccountActive = true;
 
 	return 0;
 }
@@ -447,6 +500,7 @@ cmd list[100] =
 	{ "disableUser", disableAccount },
 	{ "deleteUser", deleteAccount_run },
 	{ "save", save},
+	{"enableUser", enableAccount},
 	{ "", NULL }
 };
 
