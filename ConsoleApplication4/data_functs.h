@@ -38,6 +38,7 @@ struct profiles
 	bool isActive = false;
 	bool isAccountActive = true;
 	int pts = 0;
+	int trophies = 0;
 };
 
 struct cmd

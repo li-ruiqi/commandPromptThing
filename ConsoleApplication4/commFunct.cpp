@@ -102,6 +102,7 @@ int PrintCommands(vector <profiles> *p)
 	printf("addUser - creates new account\n");
 	printf("deleteUser - deletes an account and wipes data\n");
 	printf("disableUser - disables an user, making in not usable\n");
+	printf("enableUser - enables a disabled account");
 	printf("save - saves stuff to hard drive\n");
 	printf("exit - exits program\n");
 	return 0;
@@ -264,10 +265,77 @@ int deleteAccount_run(vector <profiles> *p)
 	(*p)[a].pts = 0;
 	(*p)[a].isAccountActive = true;
 	(*p)[a].isActive = false;
+	(*p)[a].trophies = 0;
 
 	printf("data deleted");
 
 
+	return 0;
+}
+
+//--------------------
+
+int submitData_run(vector <profiles> *p)
+{
+	string c;
+	printf("%sobtaining data[--        ] 27%%\r", KBLU);
+	Sleep(420);
+	printf("%s", DLINE);
+	printf("obtaining data[---       ]32%%\r");
+	Sleep(220);
+	printf("%s", DLINE);
+	printf("data obtained[----------]100%%\n\n");
+	printf("%stip: enter \"END\" to end the list\n\n", KGRN);
+	
+	while (true)
+	{
+		printf("%ssubmitGameData.%sUserNum - ", KGRN, KBLU);
+		a();
+
+		getline(cin, c);
+
+		int a;
+
+		try
+		{
+			a = stoll(c, 0, 10);
+		}
+		catch (...)
+		{
+			failCode();
+			return 0;
+		}
+
+		if (unknownCodeFailure(c) || !((*p)[a].isActive))
+		{
+			failCode();
+			return 0;
+		}
+
+		printf("%ssubmitGameData.%sUserPoints - ", KGRN, KBLU);
+
+		getline(cin, c);
+
+		int b;
+
+		try
+		{
+			b = stoll(c, 0, 10);
+		}
+		catch (...)
+		{
+			failCode();
+			return 0;
+		}
+
+		if (unknownCodeFailure(c))
+		{
+			failCode();
+			return 0;
+		}
+
+		(*p)[a].pts = 0;
+	}
 	return 0;
 }
 
