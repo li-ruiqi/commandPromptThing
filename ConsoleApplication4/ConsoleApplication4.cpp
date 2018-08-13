@@ -50,7 +50,7 @@ int main()
 
 			printf("\n");
 
-			while (c != "exit")
+			while (c != "exit" && c != "exit_WIPE")
 			{
 				printf("%sAccount1_", KYEL);
 				printf("%sADMIN", KBLU);

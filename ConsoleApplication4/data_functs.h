@@ -8,6 +8,8 @@
 #include <string>
 #include <vector>
 #include <stdlib.h>
+#include <algorithm>
+#include <conio.h>
 
 using namespace std;
 
@@ -49,5 +51,7 @@ struct cmd
 
 extern vector <profiles> accounts;
 
+int exit_NULLSAVE(vector <profiles> *p);
+int wipe_data_test(vector <profiles> *p);
 int read(vector <profiles> *p);
 int save(vector <profiles> *p);

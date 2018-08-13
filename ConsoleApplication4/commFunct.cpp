@@ -105,6 +105,7 @@ int PrintCommands(vector <profiles> *p)
 	printf("enableUser - enables a disabled account");
 	printf("save - saves stuff to hard drive\n");
 	printf("exit - exits program\n");
+	printf("wipe_data_accounts\n");
 	return 0;
 }
 
@@ -118,6 +119,8 @@ int addNewAccount(vector <profiles> *p)
 	while ((*p)[profileNum].isActive)
 	{
 		profileNum++;
+		if (profileNum == 9)
+			return 0;
 	}
 
 	(*p)[profileNum].isActive = true;
@@ -277,7 +280,9 @@ int deleteAccount_run(vector <profiles> *p)
 
 int submitData_run(vector <profiles> *p)
 {
+	vector <int> list (10);
 	string c;
+	int i = 0;
 	printf("%sobtaining data[--        ] 27%%\r", KBLU);
 	Sleep(420);
 	printf("%s", DLINE);
@@ -293,6 +298,11 @@ int submitData_run(vector <profiles> *p)
 		a();
 
 		getline(cin, c);
+		if (c == "END")
+		{
+			printf("exiting code");
+			break;
+		}
 
 		int a;
 
@@ -335,7 +345,24 @@ int submitData_run(vector <profiles> *p)
 		}
 
 		(*p)[a].pts = 0;
+		
+		list[i] = b;
+		
+		i++;
+		if (a == 9)
+		{
+			printf("reached max amount");
+			break;
+		}
 	}
+
+	sort(list.begin(), list.end());
+
+	for (int x = 0; x < 10; x++)
+	{
+
+	}
+	
 	return 0;
 }
 
@@ -473,6 +500,8 @@ int disableAccount(vector <profiles> *p)
 		printf("\r");
 	}
 
+	printf("%s\rdisabled\n", DLINE);
+
 	(*p)[a].isAccountActive = false;
 
 	return 0;
@@ -527,6 +556,8 @@ int enableAccount(vector <profiles> *p)
 		printf("\r");
 	}
 
+	printf("%s\renabled\n", DLINE);
+
 	(*p)[a].isAccountActive = true;
 
 	return 0;
@@ -568,7 +599,9 @@ cmd list[100] =
 	{ "disableUser", disableAccount },
 	{ "deleteUser", deleteAccount_run },
 	{ "save", save},
-	{"enableUser", enableAccount},
+	{ "enableUser", enableAccount},
+	{ "wipe_data_accounts", wipe_data_test},
+	{ "exit_WIPE", exit_NULLSAVE},
 	{ "", NULL }
 };
 
