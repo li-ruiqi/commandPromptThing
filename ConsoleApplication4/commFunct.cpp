@@ -105,7 +105,7 @@ int PrintCommands(vector <profiles> *p)
 	printf("enableUser - enables a disabled account");
 	printf("save - saves stuff to hard drive\n");
 	printf("exit - exits program\n");
-	printf("wipe_data_accounts\n");
+	printf("wipe_data_accounts - *%sdo not use%s* - resets all data\n", KRED, KGRN);
 	return 0;
 }
 
@@ -458,6 +458,32 @@ int editAccount(vector <profiles> *p)
 
 //--------------------
 
+int accountList(vector <profiles> *p)
+{
+	printf("\n");
+	for (int i = 0; i < 10; i++)
+	{
+		printf("%suser_%dData - ", KGRN, i);
+
+		if (!(*p)[i].isActive)
+			printf("%sFAIL%s:account dosen't exit\n", KRED, KYEL);
+		else if (!(*p)[i].isAccountActive)
+			printf("%sFAIL%s:account is disabled\n", KRED, KYEL);
+		else
+		{
+			printf("%sstatus - \n\n", KBLU);
+			printf("\t%sname: %s%s\n", KMAG, KGRN, (*p)[i].name.c_str());
+			printf("\t%spassword:%s %s\n", KMAG, KGRN, (*p)[i].password.c_str());
+			printf("\t%spoints: %s%d\n", KMAG, KGRN, (*p)[i].pts);
+			printf("\t%strophies: %s%d\n\n", KMAG, KGRN, (*p)[i].trophies);
+		}
+	}
+	printf("\n%sEND", KGRN);
+	return 0;
+}
+
+//--------------------
+
 int disableAccount(vector <profiles> *p)
 {
 	string c;
@@ -602,15 +628,17 @@ cmd list[100] =
 	{ "enableUser", enableAccount},
 	{ "wipe_data_accounts", wipe_data_test},
 	{ "exit_WIPE", exit_NULLSAVE},
+	{"userList", accountList},
 	{ "", NULL }
 };
 
 cmd listUsers[100] =
 {
 	{ "commandList", PrintCommands_user },
-{ "?", PrintCommands_user },
-{ "help", PrintCommands_user },
-{ "openProfile", getAccount },
-{ "exit", exit_run },
-{ "", NULL }
+	{ "?", PrintCommands_user },
+	{ "help", PrintCommands_user },
+	{ "openProfile", getAccount },
+	{ "exit", exit_run },
+	{ "friendList", accountList},
+	{ "", NULL }
 };
