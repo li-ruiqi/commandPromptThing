@@ -15,6 +15,8 @@ int main()
 	string c;
 	cmd *run = list;
 	vector <profiles> *plist = &accounts;
+	int returnValue = 0;
+
 	printf("%sdownloading data[--        ] 27%%\r", KGRN);
 	Sleep(420);
 	printf("%s", DLINE);
@@ -50,7 +52,7 @@ int main()
 
 			printf("\n");
 
-			while (c != "exit" && c != "exit_WIPE")
+			while (returnValue != EXITCODE)
 			{
 				printf("%sAccount1_", KYEL);
 				printf("%sADMIN", KBLU);
@@ -66,7 +68,7 @@ int main()
 				{
 					if (run->commandName == c)
 					{
-						run->run(plist);
+						returnValue = run->run(plist);
 						break;
 					}
 					run++;
@@ -81,6 +83,7 @@ int main()
 					printf("%sINVALID INPUT\n", KRED);
 				}
 			}
+			returnValue = 0;
 		}
 
 		else if (c == accounts[0].name && accounts[0].isActive)
@@ -138,6 +141,7 @@ int main()
 					printf("%sINVALID INPUT\n", KRED);
 				}
 			}
+			returnValue = 0;
 		}
 
 		else if (c == accounts[1].name && accounts[1].isActive)
@@ -196,6 +200,7 @@ int main()
 				}
 			}
 		}
+		else if (c == "quit");
 		else
 		{
 			printf("%s", CUP);
@@ -203,6 +208,5 @@ int main()
 			printf("%sunknown password\n", KRED);
 		}
 	}
-	getchar();
 	return 0;
 }

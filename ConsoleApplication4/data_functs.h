@@ -27,6 +27,8 @@ using namespace std;
 
 #define MNUM 0x758329
 
+extern int EXITCODE;
+
 struct FileHEADER
 {
 	int magic = MNUM;

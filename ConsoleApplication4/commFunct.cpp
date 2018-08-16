@@ -96,16 +96,29 @@ int PrintCommands_user(vector <profiles> *p)
 
 int PrintCommands(vector <profiles> *p)
 {
-	printf("%s\ncommandList - lists commands\n", KGRN);
-	printf("editUser - edits data in an account\n");
-	printf("showUserData - prints all data from a account\n");
-	printf("addUser - creates new account\n");
-	printf("deleteUser - deletes an account and wipes data\n");
-	printf("disableUser - disables an user, making in not usable\n");
-	printf("enableUser - enables a disabled account");
-	printf("save - saves stuff to hard drive\n");
-	printf("exit - exits program\n");
-	printf("wipe_data_accounts - *%sdo not use%s* - resets all data\n", KRED, KGRN);
+	printf("%s\ncommandList - lists commands:\n\n", KGRN);
+
+	printf("%suser based commands:\n\n", KBLU);
+
+	printf("%s    account creation/basic leves commands\n\n", KMAG);
+
+	printf("%s\taddUser - creates new account\n", KGRN);
+	printf("\tdeleteUser - deletes an account and wipes data\n");
+
+	printf("\tdisableUser - disables an user, making in not usable\n");
+	printf("\tenableUser - enables a disabled account\n\n");
+
+	printf("%s    display/edit user data:\n\n", KMAG);
+
+	printf("%s\teditUser - edits data in an account\n", KGRN);
+	printf("\tshowUserData - prints all data from a account\n");
+	printf("*new*   listUser - lists all users and their states\n\n");
+	
+	printf("%s    hard drive memory change commands:\n\n", KMAG);
+
+	printf("\t%ssave - saves stuff to hard drive\n", KGRN);
+	printf("\texit - exits program\n");
+	printf("\twipe_data_accounts - *%sdo not use%s* - resets all data\n", KRED, KGRN);
 	return 0;
 }
 
@@ -119,7 +132,7 @@ int addNewAccount(vector <profiles> *p)
 	while ((*p)[profileNum].isActive)
 	{
 		profileNum++;
-		if (profileNum == 9)
+		if (profileNum == 10)
 			return 0;
 	}
 
@@ -368,6 +381,43 @@ int submitData_run(vector <profiles> *p)
 
 //--------------------
 
+int addNewUser_c(vector <profiles> *p)
+{
+	string c;
+
+	printf("%s", CUP);
+	printf("%sAccount1_", KYEL);
+	printf("%sADMIN", KBLU);
+	printf("%s: $- ", KYEL);
+	printf("%saddUser_set", KCYN);
+
+	getline(cin, c);
+
+
+
+
+	int a;
+
+	try
+	{
+		a = stoll(c, 0, 10);
+	}
+	catch (...)
+	{
+		failCode();
+		return 0;
+	}
+
+	if (unknownCodeFailure(c) || (*p)[a].isActive)
+	{
+		printf("%sFAIL%s:account alredy exists", KRED, KYEL);
+		return 0;
+	}
+	return 0;
+}
+
+//--------------------
+
 int editAccount(vector <profiles> *p)
 {
 	string c;
@@ -608,7 +658,7 @@ int exit_run(vector <profiles> *p)
 
 	printf("data saved[----------]100%%\n\n");
 
-	return 0;
+	return EXITCODE;
 }
 
 //--------------------

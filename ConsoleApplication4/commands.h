@@ -15,4 +15,4 @@ int setup();
 extern cmd list[100];
 extern cmd listUsers[100];
 
-extern struct FileHEADER;
+struct FileHEADER;
